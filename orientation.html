@@ -16,9 +16,9 @@
 <script>
 
 function handleOrientation(event) {
-  document.getElementById("a").innerHTML = `$Alpha: {event.alpha}`;  
-  document.getElementById("b").innerHTML = `$Alpha: {event.beta}`;
-  document.getElementById("g").innerHTML = `$Alpha: {event.gamma}`;
+  document.getElementById("a").innerHTML = `Alpha: ${event.alpha}`;  
+  document.getElementById("b").innerHTML = `Beta: ${event.beta}`;
+  document.getElementById("g").innerHTML = `$Gamma: ${event.gamma}`;
 }
 
 window.addEventListener('deviceorientation', handleOrientation);
