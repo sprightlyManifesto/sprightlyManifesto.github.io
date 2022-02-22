@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+<head>
+</head>
+
+<div id="orientData"></div>
+    <div id="alpha"></div>
+    <div id="beta"></div>
+    <div id="gamma"></div>   
+    <div id="message">test</div>
+</div>
+
+<script>
+    document.getElementById("message").innerHTML +="<br>starting"
+    
+    try {const sensor = new RelativeOrientationSensor();}
+    catch(err) {
+        document.getElementById("message").innerHTML = err.message;
+    }
+    document.getElementById("message").innerHTML +="<br>sensor init"
+
+    Promise.all([navigator.permissions.query({ name: "accelerometer" }),
+             navigator.permissions.query({ name: "gyroscope" })])
+       .then(results => {
+         if (results.every(result => result.state === "granted")) {
+           document.getElementById("message").innerHTML += "<br>permission granted"
+           sensor.start();
+         } else {
+            document.getElementById("message").innerHTML += "<br>No permissions to use RelativeOrientationSensor";
+         }
+    
+    });
+    sensor.start()
+    document.getElementById("message").innerHTML +="<br>Sensor Started"
+    </script>
+    
+</html>
