@@ -60,13 +60,14 @@ test test
       }
 
 function handleOrientation(event) {
-  a = event.alpha;  
+  a = event.alpha;
+  if(a < 80 & a >-80)  
+  {
   jp.setAttribute("transform",`rotate(${dA+a})`);
   mp.setAttribute("transform",`rotate(${a})`);
+   }
 }
 window.addEventListener('deviceorientation', handleOrientation);
 
 </script>
-   
-
 </html>
