@@ -1,6 +1,5 @@
 <html>
-test test
- 
+<div id="dbg"></div> 
 <svg viewbox="-0 0 600 600" height="100%">
   <g>
     <path
@@ -61,7 +60,8 @@ test test
 
 function handleOrientation(event) {
   a = event.alpha;
-  if((a < 80) & (a >-80))  
+  document.getElementById("dbg").innerHTML = a;
+  if(true)  
   {
   jp.setAttribute("transform",`rotate(${dA+a})`);
   mp.setAttribute("transform",`rotate(${a})`);
