@@ -72,14 +72,14 @@ function handleOrientation(event) {
    }
 
   //45 Magic nubmer is where the sail models are drawn (close hauled)
-   var mod = 1
+   var mod = -1
    if(a > 120) a = 120;
    if(a < -120) a = -120;
    fj.setAttribute("transform",`rotate(${(-a/2+45)})`);
    fm.setAttribute("transform",`rotate(${(-a/4+45)})`);
-   if(a <0){mod = -1;}
-   jp.setAttribute("transform",`rotate(${dA*mod-a+45*mod}) scale(${-mod}, 1)`);
-   mp.setAttribute("transform",`rotate(${-a+45*mod}) scale(${-mod}, 1)`);
+   if(a <0){mod = 1;}
+   jp.setAttribute("transform",`rotate(${dA*mod+a+45*mod}) scale(${-mod}, 1)`);
+   mp.setAttribute("transform",`rotate(${a+45*mod}) scale(${-mod}, 1)`);
 }
 
 window.addEventListener('deviceorientation', handleOrientation);
