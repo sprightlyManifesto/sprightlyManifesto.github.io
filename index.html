@@ -63,7 +63,7 @@ function handleOrientation(event) {
 
   //45 Magic nubmer is where the sail models are drawn (close hauled)
    var mod = 1
-   var limA = 70
+   var limA = 120
    if(a > limA) a = limA;
    if(a < -limA) a = -limA;
    fj.setAttribute("transform",`rotate(${(a/2+45)})`);
