@@ -1,73 +1,89 @@
 <html>
-<div id="dbg"></div> 
+<div id="dbg"></div>
+<label>Angle:</label><input type="number" id="A" min="-360" max ="360">  
 <svg viewbox="-0 0 600 600" height="100%">
-  <g>
+  <g id="boatOutline">
     <path
 	   style="fill:none;stroke:#000000;stroke-width:2px;stroke-linecap:round;stroke-linejoin:round"
-       d="M 114.088,5 A 487.703,487.703 0 0 0 26.357,216.899 607.28,607.28 0 0 0 27.995,414.561 L 44.552,510 h 69.536"
-       class="s1"
-       id="path12" />
-
-    
+       d="M 114.088,5 A 487.703,487.703 0 0 0 26.357,216.899 607.28,607.28 0 0 0 27.995,414.561 L 44.552,510 h 69.536"/>    
     <path
 		style="fill:none;stroke:#000000;stroke-width:2px;stroke-linecap:round;stroke-linejoin:round"
-       d="m 114.088,4.999997 a 487.703,487.703 0 0 1 87.73101,211.899003 607.28,607.28 0 0 1 -1.638,197.66199 L 183.62401,510 H 114.088"
-       class="s1"
-       id="path12-3" />
-  </g>
-
+       d="m 114.088,4.999997 a 487.703,487.703 0 0 1 87.73101,211.899003 607.28,607.28 0 0 1 -1.638,197.66199 L 183.62401,510 H 114.088"/>
+  </g> 
  <g transform="translate(115 200)">
+    <!--Arc arguement order:  A rx ry 0 0 1 startAngle, end Angle-->
   <path id="mainPath" transform="rotate(0)"
      d="M 0 0 A 50 160, 0, 0, 1, 20 275"
-     style="fill:none;stroke:#00aa00;stroke-width:2px;stroke-opacity:1"
-     id="main" />
-     </g>
+     style="fill:none;stroke:#00aa00;stroke-width:2px;stroke-opacity:1"/>
+  <path id="mainFlapping"
+     d="M 0 0 L 200,200"
+     style="fill:none;stroke:#aa0000;stroke-width:2px;stroke-opacity:1"/>  
+ </g>
+
   <g transform="translate(115 70)">
    <path id="jibPath" transform="rotate(0)"
       d="M 0 0 A 40 120, 0, 0, 1, 30 150"
-      style="fill:none;stroke:#00aa00;stroke-width:2px;stroke-opacity:1"
-      id="jib" />
-  </g>
+      style="fill:none;stroke:#00aa00;stroke-width:2px;stroke-opacity:1"/>   
+      <g id="flappingJib" transform="rotate(0)">
+      <path id="jibFlapping"
+      d="M 0 0 L 100,100"
+      style="fill:none;stroke:#aa0000;stroke-width:2px;stroke-opacity:1"/>
+      </g>
+   </g>
 </svg>
 
 <script>
-   var dA = -10
-   var a = -0
+   var headToWind = null;
+   var dA = -10;
+   var a = -0;
    var jp = document.getElementById("jibPath");  
    var mp = document.getElementById("mainPath");
-   var sheetOut = true;
-
-   //document.getElementById("jibPath").setAttribute("transform")="rotate(50)";
-   //window.setInterval(timerISR, 25);   
-
-   function timerISR(){
-      if((a > -70) & sheetOut)
-         {
-         a -= 0.5
-         }
-      else{
-         sheetOut = false;
-            a += 0.5;
-            if(a>-0)
-            {
-               sheetOut = true;
-            }
-         }
-
-         jp.setAttribute("transform",`rotate(${dA+a})`);
-         mp.setAttribute("transform",`rotate(${a})`);
-      }
-
+   var fj = document.getElementById("jibFlapping");
+   var fm = document.getElementById("mainFlapping");
+   var flapJib = false;
+   var flapMain = false;
+   
 function handleOrientation(event) {
-  a = event.alpha;
-  document.getElementById("dbg").innerHTML = a;
-  if(true)  
-  {
-  jp.setAttribute("transform",`rotate(${dA+a})`);
-  mp.setAttribute("transform",`rotate(${a})`);
+  if(isNaN(event.alpha))
+   {
+      a = document.getElementById("A").value;
    }
+   else
+   {
+     if(headToWind == null) headToWind = event.alpha;
+      a = (event.alpha-headToWind)%360;
+   }
+
+  document.getElementById("dbg").innerHTML = a;
+
+  if(a>-45 & a < 45)  
+   {
+      jp.setAttribute("visibility","hidden");
+      mp.setAttribute("visibility","hidden");
+      fj.setAttribute("visibility","visible");
+      fm.setAttribute("visibility","visible");
+   }
+  else
+   {
+      jp.setAttribute("visibility","visible");
+      mp.setAttribute("visibility","visible");
+      fj.setAttribute("visibility","hidden");
+      fm.setAttribute("visibility","hidden");
+   }
+
+  //45 Magic nubmer is where the sail models are drawn (close hauled)
+   var mod = 1
+   if(a > 120) a = 120;
+   if(a < -120) a = -120;
+   fj.setAttribute("transform",`rotate(${(-a/2+45)})`);
+   fm.setAttribute("transform",`rotate(${(-a/4+45)})`);
+   if(a <0){mod = -1;}
+   jp.setAttribute("transform",`rotate(${dA*mod-a+45*mod}) scale(${mod}, 1)`);
+   mp.setAttribute("transform",`rotate(${-a+45*mod}) scale(${mod}, 1)`);
 }
+
 window.addEventListener('deviceorientation', handleOrientation);
+document.getElementById("A").addEventListener("change",handleOrientation);
 
 </script>
 </html>
