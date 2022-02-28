@@ -41,7 +41,7 @@ function handleOrientation(event) {
    else
    {
      if(headToWind == null) headToWind = event.alpha;
-      a = event.alpha;
+      a = event.alpha-180;
    }
 
   document.getElementById("dbg").innerHTML = a;
