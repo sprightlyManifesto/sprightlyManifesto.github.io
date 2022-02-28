@@ -40,8 +40,8 @@ function handleOrientation(event) {
    }
    else
    {
-     if(headToWind == null) headToWind = event.alpha;
-      a = event.alpha-headToWind-180;
+     if(headToWind == null) headToWind = event.alpha-180;
+      a = event.alpha-headToWind;
    }
 
   document.getElementById("dbg").innerHTML = a;
